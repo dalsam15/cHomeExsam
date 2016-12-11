@@ -135,8 +135,7 @@ int checkUpLeft( Board* board, int color, int x, int y){
 			 CrossAppo = 1;
 		}
 		j=x - 1;
-		for(int i = y -1;i>= 0; i-- ){
-			printf("x = %d - y = %d \n", j,i);			
+		for(int i = y -1;i>= 0; i-- ){			
 			if(board->fields[j][i] == WHITE){
 				 endsWithOwn = 1;
 			}
@@ -225,15 +224,81 @@ int checkUpRight( Board* board, int color, int x, int y){
 	}
 	return 0;
 }
+int checkDownLeft( Board* board, int color, int x, int y){
+	int CrossAppo = 0;
+	int endsWithOwn = 0;
+	int j = x - 1;
+	int yCounter = y + 1;
+	if(color) {  //Black
+		if(board->fields[x-1][y+1] == WHITE){
+			 CrossAppo = 1;
+		}
+		for(int i = yCounter;i<= BOARD_SIZE - yCounter; i++ ){
+
+			if(board->fields[j][i] == BLACK){
+				 endsWithOwn = 1;
+			}
+			j--;
+		}
+	
+
+		if(endsWithOwn && CrossAppo){
+			board->fields[x][y] = BLACK;
+			j = x - 1;
+			for(int i = yCounter;i<= BOARD_SIZE - yCounter; i++ ){
+				if(board->fields[j][i] == BLACK){
+					break;
+				}
+				if(board->fields[j][i] == WHITE){
+					 board->fields[j][i] = BLACK;
+				}
+				j--;
+			}
+			return 1;	
+		}
+	}else{//white
+
+		if(board->fields[x-1][y+1] == BLACK){
+			 CrossAppo = 1;
+		}
+		j=x-1;
+		for(int i = yCounter;i<= BOARD_SIZE - yCounter; i++ ){
+			
+			if(board->fields[j][i] == WHITE){
+				 endsWithOwn = 1;
+			}
+			j--;
+		}
+	
+
+		if(endsWithOwn && CrossAppo){//flipp
+			board->fields[x][y] = WHITE;
+			j = x - 1;
+			for(int i = yCounter;i<= BOARD_SIZE - yCounter; i++ ){	
+				if(board->fields[j][i] == WHITE){
+					break;
+				}
+				if(board->fields[j][i] == BLACK){
+					 board->fields[j][i] = WHITE;
+				}
+				j--;
+			}
+			return 1;	
+		}
+
+	}
+	return 0;
+}
 int checkDownRight( Board* board, int color, int x, int y){
 	int CrossAppo = 0;
 	int endsWithOwn = 0;
 	int j = x + 1;
+	int yCounter = y + 1;
 	if(color) {  //Black
 		if(board->fields[y+1][x+1] == WHITE){
 			 CrossAppo = 1;
 		}
-		for(int i = y+ 1;i<= BOARD_SIZE - y + 1; i++ ){
+		for(int i = yCounter;i<= BOARD_SIZE - yCounter; i++ ){
 
 			if(board->fields[j][i] == BLACK){
 				 endsWithOwn = 1;
@@ -245,8 +310,10 @@ int checkDownRight( Board* board, int color, int x, int y){
 		if(endsWithOwn && CrossAppo){
 			board->fields[x][y] = BLACK;
 			j = x + 1;
-			for(int i = y+ 1;i<= BOARD_SIZE - y + 1; i++ ){
-
+			for(int i = yCounter;i<= BOARD_SIZE - yCounter; i++ ){
+				if(board->fields[j][i] == BLACK){
+					break;
+				}
 				if(board->fields[j][i] == WHITE){
 					 board->fields[j][i] = BLACK;
 				}
@@ -260,7 +327,7 @@ int checkDownRight( Board* board, int color, int x, int y){
 			 CrossAppo = 1;
 		}
 		j=x+1;
-		for(int i = y+ 1;i<= BOARD_SIZE - y + 1; i++ ){
+		for(int i = yCounter;i<= BOARD_SIZE - yCounter; i++ ){
 			
 			if(board->fields[j][i] == WHITE){
 				 endsWithOwn = 1;
@@ -272,7 +339,10 @@ int checkDownRight( Board* board, int color, int x, int y){
 		if(endsWithOwn && CrossAppo){//flipp
 			board->fields[x][y] = WHITE;
 			j = x + 1;
-			for(int i = y+ 1;i<= BOARD_SIZE - y + 1; i++ ){	
+			for(int i = yCounter;i<= BOARD_SIZE - yCounter; i++ ){	
+				if(board->fields[j][i] == WHITE){
+					break;
+				}
 				if(board->fields[j][i] == BLACK){
 					 board->fields[j][i] = WHITE;
 				}
@@ -294,10 +364,8 @@ int checkUp( Board* board, int color, int x, int y){
 	if(color) {  //Black
 		if(board->fields[x][y-1] == WHITE){
 			 CrossAppo = 1;
-			//printf("cp= %d\n",CrossAppo );
 		}
 		for(int i =  yCounter;i>=0; i-- ){
-			//printf("x = %d - y = %d \n", x,i);
 
 			if(board->fields[x][i] == BLACK){
 				 endsWithOwn = 1;
@@ -347,14 +415,14 @@ int checkUp( Board* board, int color, int x, int y){
 int checkRight( Board* board, int color, int x, int y){
 	int CrossAppo = 0;
 	int endsWithOwn = 0;
+	int xCounter = x+1;
 	if(color) {  //Black
-		if(board->fields[y][x+1] == WHITE){
+		if(board->fields[x+1][y] == WHITE){
 			 CrossAppo = 1;
 		}
-		for(int i =  x + 1;i<= BOARD_SIZE - x + 1; i++ ){
+		for(int i = xCounter;i<= BOARD_SIZE - xCounter; i++ ){
 
-
-			if(board->fields[y][i] == BLACK){
+			if(board->fields[i][y] == BLACK){
 				 endsWithOwn = 1;
 			}
 		}
@@ -362,23 +430,25 @@ int checkRight( Board* board, int color, int x, int y){
 
 		if(endsWithOwn && CrossAppo){
 			board->fields[x][y] = BLACK;
-			for(int i =  x + 1;i<= BOARD_SIZE - x + 1; i++ ){
-
-				if(board->fields[y][i] == WHITE){
-					board->fields[y][i] = BLACK;
+			for(int i =  xCounter;i<= BOARD_SIZE - xCounter; i++ ){
+				printf("x = %d - y = %d \n", i,y);
+				if(board->fields[i][y] == BLACK){
+					break;
+				}
+				if(board->fields[i][y] == WHITE){
+					board->fields[i][y] = BLACK;
 				}
 			}
 			return 1;	
 		}
 	}else{ //White
 
-		if(board->fields[y][x+1] == BLACK){
+		if(board->fields[x+1][y] == BLACK){
 			 CrossAppo = 1;
 		}
-		for(int i =  x + 1;i<= BOARD_SIZE - x + 1; i++ ){
+		for(int i =  xCounter;i<= BOARD_SIZE - xCounter; i++ ){
 				
-
-			if(board->fields[y][i] == WHITE){
+			if(board->fields[i][y] == WHITE){
 				 endsWithOwn = 1;
 			}
 		}
@@ -387,6 +457,9 @@ int checkRight( Board* board, int color, int x, int y){
 		if(endsWithOwn && CrossAppo){
 			board->fields[x][y] = WHITE;
 			for(int i =  x + 1;i<= BOARD_SIZE - x + 1; i++ ){	
+				if(board->fields[i][y] == WHITE){
+					break;
+				}
 				if(board->fields[i][y] == BLACK){
 					board->fields[i][y] = WHITE;
 				}
@@ -468,7 +541,6 @@ int checkDown( Board* board, int color, int x, int y){
 		if(board->fields[x][y+1] == WHITE){
 			 CrossAppo = 1;
 		}
-		//printf("%d\n",CrossAppo);
 		for(int i = y+ 1;i< BOARD_SIZE - y ; i++ ){
 			
 
@@ -503,7 +575,7 @@ int checkDown( Board* board, int color, int x, int y){
 	
 
 		if(endsWithOwn && CrossAppo){
-			board->fields[x][y+1] = WHITE;
+			board->fields[x][y] = WHITE;
 			for(int i = y+ 1;i<= BOARD_SIZE - y + 1; i++ ){	
 				if(board->fields[x][i] == BLACK){
 					 board->fields[x][i] = WHITE;
@@ -541,8 +613,9 @@ int getXValue(char* xChar){
 	if(xChar == 'h'){
 		return 8;	
 	}
-	return 100;	
+	return 0;	
 }
+
 void RemoveSpaces(char* source)
 {
   char* i = source;
@@ -581,17 +654,40 @@ int isMoveLegal(const Board* board, int color, int x, int y){
 	//0 for hvit
 	x = x -1;
 	y = y -1;
-	//printf("x= %d - y= %d\n", x, y);
-	if(board->fields[y][x] != EMPTY){
+	int legal = 0;
+	if(board->fields[x][y] != EMPTY){
+
 		return 0;
 	}
-		
-	if (checkUp(board, color,x,y) == 1 ||checkDown(board, color,x,y) == 1 ||checkRight(board, color,x,y) == 1 ||checkLeft(board, color,x,y) == 1 || checkDownRight(board, color,x,y)==1 || checkUpRight(board, color,x,y)==1 || checkUpLeft(board, color,x,y)==1){
-		return 1;	
-	}
 	
+		
+	if (checkUp(board, color,x,y) == 1){
+		legal = 1;	
+	}
+	if (checkDown(board, color,x,y) == 1){
+		legal = 1;	
+	}
+	if (checkRight(board, color,x,y) == 1){
+		legal = 1;	
+	}
+	if (checkLeft(board, color,x,y) == 1){
+		legal = 1;	
+	}
+	if (checkDownRight(board, color,x,y) == 1){
+		legal = 1;	
+	}
+	if (checkDownLeft(board, color,x,y) == 1){
+		legal = 1;	
+	}
+	if (checkUpRight(board, color,x,y) == 1){
+		legal = 1;	
+	}
+	if (checkUpLeft(board, color,x,y) == 1){
+		legal = 1;	
+	}
 
-	return 0;
+
+	return legal;
 
 }
 

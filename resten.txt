@@ -1,0 +1,29 @@
+//printf("x = %d - y = %d \n", i,y);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+new test
+c4
+e3
+f2
+c3
+f3
+e2
+d3 // her skjer det feil, ikke begge sider oppdater, bare 1 
+
+
+
+
