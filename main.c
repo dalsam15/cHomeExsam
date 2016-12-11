@@ -48,7 +48,7 @@ int main(int argc, char *argv[]){
 	
 
 
-	int * usrIn
+	int * usrIn;
 	int x;
 	int y;
 
