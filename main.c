@@ -136,7 +136,7 @@ int checkUpLeft( Board* board, int color, int x, int y){
 		}
 		j=x - 1;
 		for(int i = y -1;i>= 0; i-- ){
-			
+			printf("x = %d - y = %d \n", j,i);			
 			if(board->fields[j][i] == WHITE){
 				 endsWithOwn = 1;
 			}
@@ -294,9 +294,10 @@ int checkUp( Board* board, int color, int x, int y){
 	if(color) {  //Black
 		if(board->fields[x][y-1] == WHITE){
 			 CrossAppo = 1;
+			//printf("cp= %d\n",CrossAppo );
 		}
 		for(int i =  yCounter;i>=0; i-- ){
-			printf("x = %d - y = %d \n", x,i);
+			//printf("x = %d - y = %d \n", x,i);
 
 			if(board->fields[x][i] == BLACK){
 				 endsWithOwn = 1;
