@@ -15,6 +15,9 @@ Jeg har også antatt at spiller oppgir trekk slik som oppgaven skrivere(kun de v
 Jeg har også hardkodet at spillet starter ALLTID med svarte spilleren. 
 
 
+PS! Du(oppgaven) forelsår å benytte en funksjon til alle rettninger, det klarte ikke å lage en funksjon som kan brukes til alle retninger. Derfor valgte jeg å gjøre det i 8 forskjellige funksjoner som blir kalt for hvert trekk. 
+
+
 Dette er raskeste måten å endre spillet på. Jeg brukte dette til testing. 
 
 f5
