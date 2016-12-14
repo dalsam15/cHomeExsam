@@ -5,35 +5,6 @@ printf("1 = %d - 2 = %d \n", endsWithOwn, CrossAppo);
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-new test
-c4
-e3
-f4
-g3
-g4
-c3
-d3
-g5
-h4
-c5
-b4
-d2
-c2
-
-
-
 ---fast end game
 f5
 f6
