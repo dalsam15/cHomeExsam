@@ -23,13 +23,14 @@ int checkDownLeft( Board* board, int color, int x, int y);
 int checkUpRight( Board* board, int color, int x, int y);
 int checkUpLeft( Board* board, int color, int x, int y);
 
+
 int main(int argc, char *argv[]){
 
 	player black;
 	player white;
 	Board currentBoard;
 	initBoard(&currentBoard);
-/*
+
 	printf("Enter a name for black player: \n");
 	gets(black.Name);
 	printf("You entered: %s\n", black.Name);
@@ -39,9 +40,7 @@ int main(int argc, char *argv[]){
 	gets(white.Name);
 	printf("You entered: %s\n", white.Name);
 
-*/
-	setPlayerName(&black,"Sam");
-	setPlayerName(&white,"Ahmad");
+
 	int BlackTurn = 1;
 		
 	printBoard(&currentBoard);
@@ -63,7 +62,7 @@ int main(int argc, char *argv[]){
 	
 	while(1){ // gamle loop
 		if(BlackTurn){
-			if(isGameOver(&currentBoard,1)){
+			if(isGameOver(&currentBoard,1) || isGameOver(&currentBoard,2)){
 				printf("%s is White and the Winner, CONGRATS!!!\n\n", white.Name);
 				exit(0);		
 				fclose(fileDest);
@@ -79,7 +78,7 @@ int main(int argc, char *argv[]){
 				BlackTurn = 0; 
 			
 			}else{
-				if(isGameOver(&currentBoard,1)){
+				if(isGameOver(&currentBoard,1) || isGameOver(&currentBoard,2)){
 					printf("%s is White and the Winner, CONGRATS!!!\n\n", white.Name);
 					exit(0);
 					fclose(fileDest);		
@@ -98,7 +97,7 @@ int main(int argc, char *argv[]){
 			}	
 			
 		}if(!BlackTurn){
-			if(isGameOver(&currentBoard,0)){
+			if(isGameOver(&currentBoard,0) || isGameOver(&currentBoard,2)){
 				printf("%s is Black and the Winner, CONGRATS!!!\n\n", black.Name);
 				exit(0);
 				fclose(fileDest);		
@@ -113,7 +112,7 @@ int main(int argc, char *argv[]){
 				fprintf(fileDest, "White -> %d - %d \n",x, y  );
 				BlackTurn = 1; 
 			}else{
-				if(isGameOver(&currentBoard,0)){
+				if(isGameOver(&currentBoard,0) || isGameOver(&currentBoard,2)){
 					printf("%s is Black and the Winner, CONGRATS!!!\n\n", black.Name);
 					exit(0);		
 					fclose(fileDest);
@@ -146,15 +145,22 @@ int main(int argc, char *argv[]){
 
 
 int isGameOver(const Board* board, int color){
+	//2 for empty
 	//1 for svart
 	//0 for hvit	
-	if(color){ // sjekker om noe av den fargen er igjen 
+	if(color == 1){ // sjekker om noe av den fargen er igjen 
 	
 		if(countColor(board,1) ==0){
 			return 1;		
 		}					
-	}else{
+	}
+	if(color == 0){
 		if(countColor(board,0) ==0){
+			return 1;		
+		}				
+	}
+	if(color == 2){
+		if(countColor(board,2) ==0){
 			return 1;		
 		}				
 	}
@@ -162,11 +168,13 @@ int isGameOver(const Board* board, int color){
 }
 
 int countColor(Board* board, int color){
+	//2 for tom(empty)
 	//1 for svart
 	//0 for hvit
 	int i, j;
 	int black = 0;
 	int white = 0;
+	int empty = 0;
 	for(i = 0; i< BOARD_SIZE; i++){
 		for( j= 0; j< BOARD_SIZE; j++){
 			if(board->fields[i][j] == BLACK){
@@ -175,12 +183,19 @@ int countColor(Board* board, int color){
 			if(board->fields[i][j] == WHITE){
 				white++;			
 			}			
+			if(board->fields[i][j] == EMPTY){
+				empty++;			
+			}			
 		}	
 	}
-	if(color){
+	if(color == 1){
 		return black;		
-	}else{
+	}
+	if(color == 0){
 		return white;	
+	} 
+	if(color == 2){
+		return empty;
 	}
 
 
@@ -704,7 +719,7 @@ int checkDown( Board* board, int color, int x, int y){
 		if(board->fields[x][y+1] == WHITE){
 			 CrossAppo = 1;
 		}
-		for(int i = y+ 1;i< BOARD_SIZE - y ; i++ ){
+		for(int i = y+ 1;i< BOARD_SIZE ; i++ ){
 			if(board->fields[x][i] == EMPTY){
 				break;			
 			}			
@@ -717,7 +732,7 @@ int checkDown( Board* board, int color, int x, int y){
 
 		if(endsWithOwn && CrossAppo){
 			board->fields[x][y] = BLACK;
-			for(int i = y+ 1;i<= BOARD_SIZE - y ; i++ ){
+			for(int i = y+ 1;i<= BOARD_SIZE ; i++ ){
 				if(board->fields[x][i] == BLACK){
 					break;
 				}
@@ -732,7 +747,7 @@ int checkDown( Board* board, int color, int x, int y){
 		if(board->fields[x][y+1] == BLACK){
 			 CrossAppo = 1;
 		}
-		for(int i = y+ 1;i<= BOARD_SIZE - y ; i++ ){
+		for(int i = y+ 1;i<= BOARD_SIZE ; i++ ){
 			if(board->fields[x][i] == EMPTY){
 				break;			
 			}			
@@ -745,7 +760,7 @@ int checkDown( Board* board, int color, int x, int y){
 
 		if(endsWithOwn && CrossAppo){
 			board->fields[x][y] = WHITE;
-			for(int i = y+ 1;i<= BOARD_SIZE - y; i++ ){	
+			for(int i = y+ 1;i<= BOARD_SIZE; i++ ){	
 				if(board->fields[x][i] == WHITE){
 					break;
 				}
@@ -772,7 +787,7 @@ void RemoveSpaces(char* source)
   }
   *i = 0;
 }
-//http://stackoverflow.com/questions/1726302/removing-spaces-from-a-string-in-c
+
 
 
 
@@ -788,7 +803,7 @@ void makeItLower(char * str){
 	strcpy(str, lower);
 
 }
- //http://stackoverflow.com/questions/20385768/c-pointer-char-to-lowercase
+
 
 
 
@@ -847,5 +862,5 @@ int * getUserInput(){
 	return r;
 	
 }
-//http://stackoverflow.com/questions/1442116/how-to-get-date-and-time-value-in-c-program
+
 
